@@ -2,12 +2,70 @@ pipeline {
     agent {
         label 'agent1'
     }
-
+    tools {
+        nodejs 'nodejs-v16.0.0'
+    }
+    environment {
+        AWS_CREDENTIAL  = 'AWS-Credentials-Root-AccessKey'
+        AWS_REGION      = 'ap-southeast-2'
+        AWS_S3_BUCKET   = 'uat.bookinglet.link'
+        EMAIL_RECIPIENT = 'fxy4560654@gmail.com'
+    }
     stages {
-        stage('Hello') {
+        stage('Initializing') {
             steps {
-                echo 'Hello World'
+            echo  "********* Current Job Gist *********\nBuild ID:${ BUILD_ID } Workspace:${ WORKSPACE }\nYour job ${ BUILD_TAG } is working on ${ NODE_NAME }"
+            echo  "********* Current Node Version *********"
+            sh 'node -v'
             }
+        }
+        stage('Building') {
+            steps {
+                echo '********* install aws cli  *********'
+                sh 'apt-get update && apt install python3-pip -y && pip3 install awscli --upgrade'
+                echo '********* npm install  *********'
+                dir('./front_end') {
+                    sh 'npm install'
+                }  
+                echo '********* npm build  *********'
+                dir('./front_end') {
+                    sh 'npm build'
+                }
+            }
+        }
+        stage('Testing') {
+            steps {
+                echo '********* unit test  *********'
+            }
+        }
+        stage('Deploying') {         
+            steps{ 
+                echo '********* deploy to aws *********'
+                withAWS(credentials: "${AWS_CREDENTIAL}", region: "${AWS_REGION}") {
+                        sh "aws s3 rm s3://${AWS_S3_BUCKET} --recursive"
+                        sh "aws s3 cp ${WORKSPACE}/build s3://${AWS_S3_BUCKET} --recursive"
+                }
+            }       
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo "********* Successful *********\nCongratulations!\nyou have successfully passed your CI & CD process:\nProject Name: ${BUILD_TAG}\n Deploy Environemt: UAT"
+            emailext  attachLog: true,
+            body: "You get this email because your pipeline job in\nproject name:  ${ BUILD_TAG } \nworking environment:  UAT environment\nhas been successfully deployed.\nPlease go ${ AWS_S3_BUCKET } to check the results.\nPlease go check the log attached.", 
+            subject: "You have successfully deployed ${BUILD_TAG} on ${NODE_NAME} branch",
+            to: "${EMAIL_RECIPIENT}"             
+        }
+        failure {
+            echo "********* Fail *********\nOops!\nSomething is wrong in your  CI & CD process:\nProject Name:  ${ BUILD_TAG } \nDeploy Environemt: UAT"
+        emailext    attachLog: true,
+            body: "You get this email because your pipeline job in \nproject name:  ${ BUILD_TAG } \nworking environment:  UAT environment\nhas been failed\nPlease go check the log attached to see details.", 
+        subject: "Oops! Deploy failed for job ${BUILD_TAG} on ${ NODE_NAME } branch",
+            to: "${EMAIL_RECIPIENT}"
+
         }
     }
 }
