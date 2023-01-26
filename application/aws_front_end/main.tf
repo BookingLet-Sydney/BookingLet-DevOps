@@ -12,3 +12,11 @@ provider "aws" {
 #     Name = var.mymap["Key2"]
 #   }
 # }
+
+resource "aws_vpc" "myvpc_use_internally" {
+  cidr_block = "10.0.0.0/16"
+
+  tags = {
+    Name = "sss"
+  }
+}
