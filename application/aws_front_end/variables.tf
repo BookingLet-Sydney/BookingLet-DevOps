@@ -42,7 +42,6 @@
 
 # variable "inputthing" {
 #     type = string
-#     description = "no default value, ask when you terraform plan"
-  
+#     description = "no default value, ask when you *terraform plan*"
 # }
 
