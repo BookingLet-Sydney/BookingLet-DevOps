@@ -15,11 +15,11 @@ provider "aws" {
 //s3 backend
 terraform {
   backend "s3" {
-    bucket = "bkl-syd-devops-terraform-tfstate-backend"
-    key    = "terraform/bkl-syd.tfstate"
-    region = "ap-southeast-2"
-    encrypt = true
-    dynamodb_table = "bkl-syd-devops-tf-state-lock"
+    bucket         = "bkl-syd-tf-backend-bucket"
+    key            = "bkl-syd.tfstate"
+    region         = "ap-southeast-2"
+    encrypt        = true
+    dynamodb_table = "bkl-syd-terraform-lock-table"
   }
 }
 
@@ -115,15 +115,15 @@ terraform {
 // allows you link varibles together from different resources, you can not do that in varibles.tf
 
 
-locals {
-  prefix = "${var.prefix} - ${terraform.workspace}"
-  common_tags = {
-    environment = terraform.workspace
-    project = var.prefix
-    owner = var.contact
-    ManagedBy = "terraform"
-  }
-}
+# locals {
+#   prefix = "${var.prefix} - ${terraform.workspace}"
+#   common_tags = {
+#     environment = terraform.workspace
+#     project = var.prefix
+#     owner = var.contact
+#     ManagedBy = "terraform"
+#   }
+# }
 
 resource "aws_vpc" "myvpc_use_internally" {
   cidr_block = "10.0.0.0/16"
@@ -133,11 +133,11 @@ resource "aws_vpc" "myvpc_use_internally" {
   #   #Name = "${var.prefix}-${terraform.workspace}-test"
   # }
 
-  tags = merge(
-    local.common_tags,
-    map("Name","${var.prefix}-${terraform.workspace}-test")
+  # tags = merge(
+  #   local.common_tags,
+  #   map("Name","${var.prefix}-${terraform.workspace}-test")
 
-  )
+  # )
 
 }
 
