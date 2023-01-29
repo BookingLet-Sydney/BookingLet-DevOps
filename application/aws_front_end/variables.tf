@@ -42,7 +42,7 @@ variable "prefix" {
 #     type = object({name =string ,port =number , wtf = list(number)})
 #     default = {
 #         name = "sss"
-#         port = 1123
+#         port = 1123   var.wtf["port"]
 #         wtf = [80,443,8080]
 
 #     }
