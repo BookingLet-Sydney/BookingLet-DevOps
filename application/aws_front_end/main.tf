@@ -15,11 +15,11 @@ provider "aws" {
 //s3 backend
 terraform {
   backend "s3" {
-    bucket         = "bkl-syd-tf-backend-bucket"
-    key            = "bkl-syd.tfstate"
+    bucket         = "bkl-syd-tf-backend-fe-bucket"
+    key            = "bkl-syd-fe.tfstate"
     region         = "ap-southeast-2"
     encrypt        = true
-    dynamodb_table = "bkl-syd-terraform-lock-table"
+    dynamodb_table = "bkl-syd-fe-terraform-lock-table"
   }
 }
 
