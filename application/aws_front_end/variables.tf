@@ -1,3 +1,11 @@
+variable "prefix" {
+    type = string
+    default = "bkl-syd"
+  
+}
+
+
+
 # variable "sss" {
 #    type = string
 #    default = "sss"
