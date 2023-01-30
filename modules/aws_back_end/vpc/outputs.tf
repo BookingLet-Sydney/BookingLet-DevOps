@@ -1,6 +1,5 @@
-//input
 
-# output "vpc_arn" {
-#   value = aws_vpc.xxx.arn
-# }
-# //output
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}

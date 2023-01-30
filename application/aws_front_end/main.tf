@@ -135,7 +135,9 @@ resource "aws_vpc" "myvpc_use_internally" {
 
   # tags = merge(
   #   local.common_tags,
-  #   map("Name","${var.prefix}-${terraform.workspace}-test")
+  #   {
+    #  "Name" = "${var.prefix}-${terraform.workspace}-test"
+    #  }
 
   # )
 

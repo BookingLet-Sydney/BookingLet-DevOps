@@ -16,7 +16,7 @@ terraform {
 
 module "vpc" {
   source             = "../../modules/aws_back_end/vpc"
-  prefix             = "bkl-syd-be"
+  prefix             = "bkl-syd-app"
   cidr               = "10.0.0.0/16"
   enable_nat_gateway = false
   enable_vpn_gateway = false
@@ -29,7 +29,15 @@ module "vpc" {
 
 module "ecr" {
   source                            = "../../modules/aws_back_end/ecr"
-  prefix                            = "bkl-syd-be"
+  prefix                            = "bkl-syd-app"
   repository_read_write_access_arns = length(var.repository_read_write_access_arns) == 0 ? [data.aws_caller_identity.current.arn] : var.repository_read_write_access_arns
 
+}
+
+module "security_group" {
+  source = "../../modules/aws_back_end/security_group"
+  vpc_id = module.vpc.vpc_id
+  prefix = "bkl-syd-app"
+  alb_inbound_ports = [80,443]
+  cluster_inbound_ports =[666]
 }
