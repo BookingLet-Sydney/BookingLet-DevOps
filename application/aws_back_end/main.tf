@@ -1,6 +1,13 @@
 provider "aws" {
   region = "ap-southeast-2"
+  default_tags {
+    tags = {
+      Environment = terraform.workspace
+      Terraform   = "True"
+    }
+  }
 }
+
 
 //s3 backend
 terraform {
@@ -12,6 +19,8 @@ terraform {
     dynamodb_table = "bkl-syd-be-terraform-lock-table"
   }
 }
+
+
 
 
 module "vpc" {
@@ -35,9 +44,15 @@ module "ecr" {
 }
 
 module "security_group" {
-  source = "../../modules/aws_back_end/security_group"
+  source                = "../../modules/aws_back_end/security_group"
+  vpc_id                = module.vpc.vpc_id
+  prefix                = "bkl-syd-app"
+  alb_inbound_ports     = [80, 443]
+  cluster_inbound_ports = [666]
+}
+
+module "alb-tg" {
+  source = "../../modules/aws_back_end/alb-tg"
   vpc_id = module.vpc.vpc_id
   prefix = "bkl-syd-app"
-  alb_inbound_ports = [80,443]
-  cluster_inbound_ports =[666]
 }
