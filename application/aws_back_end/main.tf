@@ -2,8 +2,8 @@ provider "aws" {
   region = "ap-southeast-2"
   default_tags {
     tags = {
-      //Environment = terraform.workspace
-      //Terraform   = "True"
+      Environment = terraform.workspace
+      Terraform   = "True"
     }
   }
 }
@@ -52,11 +52,11 @@ module "security_group" {
 }
 
 module "alb-tg" {
-  source = "../../modules/aws_back_end/alb-tg"
-  vpc_id = module.vpc.vpc_id
-  prefix = "bkl-syd-app"
+  source    = "../../modules/aws_back_end/alb-tg"
+  vpc_id    = module.vpc.vpc_id
+  prefix    = "bkl-syd-app"
   alb_sg_id = module.security_group.alb_sg_id
-  subnets = module.vpc.public_subnets
+  subnets   = module.vpc.public_subnets
 }
 
 output "public_subnets" {

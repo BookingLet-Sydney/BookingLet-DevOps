@@ -8,8 +8,8 @@ locals {
 
 
 resource "aws_security_group" "alb_sg" {
-  name        = "${local.prefix}-alb-sg"
-  description = "${local.prefix}-alb-sg"
+  name        = "${local.prefix}-${terraform.workspace}-alb-sg"
+  description = "${local.prefix}-${terraform.workspace}-alb-sg"
   vpc_id      = var.vpc_id
 
   dynamic "ingress" {
@@ -35,17 +35,20 @@ resource "aws_security_group" "alb_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      "Name" = "${local.prefix}-alb-sg"
-    }
-  )
+  # tags = merge(
+  #   local.common_tags,
+  #   {
+  #     "Name" = "${local.prefix}-alb-sg"
+  #   }
+  # )
+  tags = {
+    "Name" = "${local.prefix}-${terraform.workspace}-alb-sg"
+  }
 }
 
 resource "aws_security_group" "cluster_sg" {
-  name        = "${local.prefix}-cluster-sg"
-  description = "${local.prefix}-cluster-sg"
+  name        = "${local.prefix}-${terraform.workspace}-cluster-sg"
+  description = "${local.prefix}-${terraform.workspace}-cluster-sg"
   vpc_id      = var.vpc_id
 
   dynamic "ingress" {
@@ -71,11 +74,14 @@ resource "aws_security_group" "cluster_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      "Name" = "${local.prefix}-cluster-sg"
-    }
+  # tags = merge(
+  #   local.common_tags,
+  #   {
+  #     "Name" = "${local.prefix}-cluster-sg"
+  #   }
 
-  )
+  # )
+  tags = {
+    "Name" = "${local.prefix}-${terraform.workspace}-cluster-sg"
+  }
 }

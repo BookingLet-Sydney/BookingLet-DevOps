@@ -12,8 +12,9 @@ module "vpc" {
   enable_vpn_gateway = var.enable_vpn_gateway
 
   tags = {
-    Terraform   = "true"
-    Environment = terraform.workspace
+    # Terraform   = "true"
+    # Environment = terraform.workspace
+    Name = "${var.prefix}-${terraform.workspace}-vpc"
   }
 }
 

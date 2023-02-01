@@ -4,12 +4,15 @@ resource "aws_lb_target_group" "app_ip_target_group" {
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
-  tags = merge(
-    local.common_tags,
-    {
-      "Name"  = "${local.prefix}-tg"
-    }
-  )
+  # tags = merge(
+  #   local.common_tags,
+  #   {
+  #     "Name"  = "${local.prefix}-tg"
+  #   }
+  # )
+  tags = {
+    "Name" = "${local.prefix}-tg"
+  }
 }
 
 # resource "aws_lb_target_group_attachment" "app" {
@@ -36,5 +39,5 @@ variable "vpc_id" {
 }
 variable "alb_sg_id" {
   type = string
-  
+
 }
