@@ -59,7 +59,17 @@ module "alb-tg" {
   subnets   = module.vpc.public_subnets
 }
 
-output "public_subnets" {
-  value = module.vpc.public_subnets
+# module "ecs" {
+#   source = "../../modules/aws_back_end/ecs"
+#   prefix = "bkl-syd-app"
+  
+# }
+
+module "role" {
+  source = "../../modules/aws_back_end/role"
+  prefix = "bkl-syd-app"
+  env_s3_arn = "arn:aws:s3:::bkl-app-dev-env-s3"
+  
 }
+
 
