@@ -1,7 +1,7 @@
 variable "prefix" {
-    type = string
-    default = "bkl-syd"
-  
+  type    = string
+  default = "bkl-syd"
+
 }
 
 

@@ -14,6 +14,9 @@ resource "aws_s3_bucket" "fe-bucket" {
   object_lock_configuration {
     object_lock_enabled = "Enabled"
   }
+  lifecycle {
+    prevent_destroy = true
+  }
 
   tags = merge(
     local.common_tags,
@@ -55,6 +58,11 @@ resource "aws_s3_bucket" "be-bucket" {
   object_lock_configuration {
     object_lock_enabled = "Enabled"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
 
   tags = merge(
     local.common_tags,

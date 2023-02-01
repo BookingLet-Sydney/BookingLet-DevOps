@@ -24,8 +24,8 @@ module "ecr" {
   })
 
   tags = {
-    Name        = "${var.prefix}-${terraform.workspace}-app"
-    Terraform   = "true"
-    Environment = terraform.workspace
+    "Name" = "${var.prefix}-${terraform.workspace}-app"
+    # Terraform   = "true"
+    # Environment = terraform.workspace
   }
 }

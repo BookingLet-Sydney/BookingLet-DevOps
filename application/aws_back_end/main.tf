@@ -52,7 +52,24 @@ module "security_group" {
 }
 
 module "alb-tg" {
-  source = "../../modules/aws_back_end/alb-tg"
-  vpc_id = module.vpc.vpc_id
-  prefix = "bkl-syd-app"
+  source    = "../../modules/aws_back_end/alb-tg"
+  vpc_id    = module.vpc.vpc_id
+  prefix    = "bkl-syd-app"
+  alb_sg_id = module.security_group.alb_sg_id
+  subnets   = module.vpc.public_subnets
 }
+
+# module "ecs" {
+#   source = "../../modules/aws_back_end/ecs"
+#   prefix = "bkl-syd-app"
+  
+# }
+
+module "role" {
+  source = "../../modules/aws_back_end/role"
+  prefix = "bkl-syd-app"
+  env_s3_arn = "arn:aws:s3:::bkl-app-dev-env-s3"
+  
+}
+
+
