@@ -1,26 +1,26 @@
 [
     {
-        "name": "sss",
-        "image": "sss",
-        "cpu": 123,
-        "memory": "350",
+        "name": "${container_name}",
+        "image": "${image_uri}",
+        "memoryReservation": ${memoryReservation},
         "essential": true,
         "portMappings": [
             {
-                "containerPort": "1234",
+                "containerPort": ${containerPort},
                 "protocol": "tcp"
             }
         ],
         "environmentFiles": [
             {
-                "value": "${environmentFiles}",
+                "value": "${env_s3_arn}/.env",
                 "type": "s3"
             }
         ],
+
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
-                "awslogs-group": "/ecs/{task-definition-name}",
+                "awslogs-group": "/ecs/${task-definition-name}",
                 "awslogs-region": "ap-southeast-2",
                 "awslogs-stream-prefix": "ecs"
             }

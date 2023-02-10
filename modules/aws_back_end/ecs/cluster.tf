@@ -8,29 +8,43 @@ module "ecs" {
       logging = "OVERRIDE"
       log_configuration = {
         cloud_watch_log_group_name = "/aws/ecs/${var.prefix}-${terraform.workspace}-cluster"
+        // cluster container insight - info e.g. Number of running tasks
       }
     }
   }
-
   fargate_capacity_providers = {
     FARGATE = {
       default_capacity_provider_strategy = {
-        weight = 50
+        weight = 99
       }
     }
     FARGATE_SPOT = {
       default_capacity_provider_strategy = {
-        weight = 50
+        weight = 1
       }
     }
   }
-
   tags = {
-   "Name" = "${var.prefix}-${terraform.workspace}-cluster"
+    "Name" = "${var.prefix}-${terraform.workspace}-cluster"
   }
 }
 
-variable "prefix" {
-    type =  string
-  
-}
+# resource "aws_ecs_cluster_capacity_providers" "app" {
+#   cluster_name = module.ecs.cluster_name
+#   capacity_providers = [
+#     "FARGATE",
+#     "FARGATE_SPOT",
+#   ]
+#    default_capacity_provider_strategy {
+
+#       capacity_provider = "FARGATE"
+#       weight = 70
+#       base = 0
+
+
+#       capacity_provider = "FARGATE_SPOT"
+#       weight = 30
+#       base = 0
+
+#    }
+# }
