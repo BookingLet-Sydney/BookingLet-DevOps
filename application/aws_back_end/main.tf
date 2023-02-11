@@ -72,7 +72,7 @@ module "ecs" {
   cluster_sg_id      = module.security_group.cluster_sg_id
   private_subnets    = module.vpc.private_subnets
   //private_subnets
-  depends_on = [module.role, module.cloudwatch]
+  depends_on = [module.role]
 
 }
 
@@ -97,6 +97,7 @@ module "cloudwatch" {
 
 module "auto_scaling" {
   source = "../../modules/aws_back_end/app_autoscaling"
+  depends_on = [module.ecs]
   
 }
 

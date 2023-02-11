@@ -9,8 +9,18 @@ resource "aws_appautoscaling_policy" "ecs_policy" {
     adjustment_type = "PercentChangeInCapacity"
     //ChangeInCapacity, ExactCapacity, and PercentChangeInCapacity.
     cooldown                = 60
+    # I think it should be larger than the evaluation periods x period time. or it is pointless.
+    #https://github.com/awsdocs/application-auto-scaling-user-guide/blob/master/doc_source/application-auto-scaling-step-scaling-policies.md
     metric_aggregation_type = "Average"
     //"Minimum", "Maximum", and "Average"
+    # CloudWatch aggregates metric data points based on the statistic 
+    # for the metric associated with your CloudWatch alarm. 
+    # When the alarm is breached, the appropriate scaling policy is triggered. 
+    # Application Auto Scaling applies your specified aggregation type 
+    # to the most recent metric data points from CloudWatch 
+    # (as opposed to the raw metric data). 
+    # It compares this aggregated metric value against the upper and lower bounds defined 
+    # by the step adjustments to determine which step adjustment to perform.
 
     step_adjustment {
       # start from threshold??? here is 50,so

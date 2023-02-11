@@ -14,6 +14,9 @@ resource "aws_ecs_service" "app" {
 
   enable_ecs_managed_tags = true
 
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
 
 
   load_balancer {
