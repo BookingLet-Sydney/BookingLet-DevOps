@@ -90,18 +90,24 @@ module "grafana" {
 }
 
 module "cloudwatch" {
-  source = "../../modules/aws_back_end/cloudwatch"
-  auto_scaling_policy_arn =module.auto_scaling.auto_scaling_policy_arn
+  source                  = "../../modules/aws_back_end/cloudwatch"
+  auto_scaling_policy_arn = module.auto_scaling.auto_scaling_policy_arn
 }
 
 
 module "auto_scaling" {
-  source = "../../modules/aws_back_end/app_autoscaling"
+  source     = "../../modules/aws_back_end/app_autoscaling"
   depends_on = [module.ecs]
-  
+
 }
 
-
+module "BG_deploy" {
+  source                    = "../../modules/aws_back_end/BG_deploy"
+  depends_on                = [module.ecs, module.alb-tg-acm]
+  prod_traffic_listener_arn = ["arn:aws:elasticloadbalancing:ap-southeast-2:820599146567:listener/app/bkl-syd-app-dev-alb/e6cd9641c1232ba3/0e53121da2597147"]
+  blue_tg_name              = "bk-dev20230211150154498300000009"
+  green_tg_name             = "test"
+}
 
 data "aws_lb_hosted_zone_id" "app" {}
 
@@ -117,4 +123,8 @@ data "aws_route53_zone" "selected" {
 
 output "host_zone_id_for_bookinglet" {
   value = data.aws_route53_zone.selected.zone_id
+}
+
+output "target_group_name" {
+  value = module.alb-tg-acm.target_group_name
 }

@@ -6,6 +6,7 @@ resource "aws_ecs_service" "app" {
 
 
   force_new_deployment = true
+  
   platform_version = "LATEST"
 
   deployment_minimum_healthy_percent = 100
@@ -18,6 +19,7 @@ resource "aws_ecs_service" "app" {
     type = "CODE_DEPLOY"
   }
 
+ // Blue and Green Deploy
 
   load_balancer {
     target_group_arn = var.target_group_id
