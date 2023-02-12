@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "high" {
 
 resource "aws_cloudwatch_metric_alarm" "low" {
   alarm_name          = "${var.prefix}-${terraform.workspace}-cpu<${var.low_threshold}"
-  comparison_operator = "LessThanOrEqualToThreshold "
+  comparison_operator = "LessThanOrEqualToThreshold"
   // way to compare
   evaluation_periods = var.evaluation_periods
   // The number of periods over 

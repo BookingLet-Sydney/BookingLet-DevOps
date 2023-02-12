@@ -81,7 +81,7 @@ module "ecs" {
   containerPort      = 8000
   memoryReservation  = 400
   // soft memory limit, usually 300-500 for web apps.
-  target_group_id = module.alb-tg-acm.target_group_Blue_arn.arn
+  target_group_id = module.alb-tg-acm.target_group_Blue_arn
   cluster_sg_id   = module.security_group.cluster_sg_id
   private_subnets = module.vpc.private_subnets
   //deploy on private_subnets needs a NAT Gateway
@@ -127,8 +127,8 @@ module "BG_deploy" {
   cluster_name              = module.ecs.cluster_name
   service_name              = module.ecs.service_name
   prod_traffic_listener_arn = [module.alb-tg-acm.aws_lb_listener_app_arn]
-  blue_tg_name              = module.alb-tg-acm.target_group_Blue_name.name
-  green_tg_name             = module.alb-tg-acm.target_group_Green_name.name
+  blue_tg_name              = module.alb-tg-acm.target_group_Blue_name
+  green_tg_name             = module.alb-tg-acm.target_group_Green_name
 }
 
 

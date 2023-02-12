@@ -20,17 +20,18 @@ module "vpc" {
   private_subnet_suffix = "private"
   public_subnet_suffix  = "public"
 
-  lifecycle {
-    create_before_destroy = true
-  }
-  
-  tags = {
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
+
+  # tags = {
     # "Name" = "-vpc"
     # BUG : Dont use Name = "name" tag here, it will over write all resources names, no matter what 'name'
     # attribute you define above
     # e.g. name = "vpc"  tags{ "Name" = 'test'}. it will always show 'test'
     # Only in this 'aws/vpc'module,other module is fine.
     # It will automatically assign specific "Name" tags to all individual resources,so don't worry.
-  }
+  # }
+
 }
 

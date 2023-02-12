@@ -22,6 +22,10 @@ output "host_zone_id_for_bookinglet" {
   value = data.aws_route53_zone.selected.zone_id
 }
 
-output "target_group_name" {
-  value = module.alb-tg-acm.target_group_name
+output "target_group_Blue_name" {
+  value = module.alb-tg-acm.target_group_Blue_name
+}
+
+output "target_group_Green_name" {
+  value = module.alb-tg-acm.target_group_Green_name
 }
