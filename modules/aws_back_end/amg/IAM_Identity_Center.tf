@@ -1,6 +1,4 @@
-
 # do it manually
-
 
 
 # resource "aws_identitystore_user" "example" {

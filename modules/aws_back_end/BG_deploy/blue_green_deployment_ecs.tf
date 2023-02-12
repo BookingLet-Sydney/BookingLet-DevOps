@@ -1,17 +1,17 @@
 resource "aws_codedeploy_app" "app" {
   compute_platform = "ECS"
-  name = "bkl-syd-dev-Codedeploy"
+  name             = "${var.prefix}-${terraform.workspace}-app"
 }
 
 resource "aws_sns_topic" "app" {
-  name = "bkl-syd-dev-Codedeploy"
+  name = "${var.prefix}-${terraform.workspace}-app-Codedeploy"
 }
 
 
 resource "aws_codedeploy_deployment_group" "example" {
   app_name               = aws_codedeploy_app.app.name
   deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
-  deployment_group_name  = "syd-app-dev-Codedeploy"
+  deployment_group_name  = "${var.prefix}-${terraform.workspace}-CodedeployGroup"
   service_role_arn       = aws_iam_role.code_deploy_ecs_role.arn
 
   auto_rollback_configuration {
@@ -36,10 +36,9 @@ resource "aws_codedeploy_deployment_group" "example" {
   }
 
   ecs_service {
-    cluster_name = "bkl-syd-app-dev-cluster"
-    service_name = "test-service"
+    cluster_name = var.cluster_name
+    service_name = var.service_name
   }
-
   load_balancer_info {
     target_group_pair_info {
       prod_traffic_route {

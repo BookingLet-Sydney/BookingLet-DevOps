@@ -18,8 +18,8 @@ resource "aws_ecs_task_definition" "app" {
     image_uri      = var.image_uri
     //cpu                  = 128
     //This field is optional for tasks using the Fargate launch type
-    memoryReservation = 400
-    containerPort     = var.containerPort
+    memoryReservation    = var.memoryReservation
+    containerPort        = var.containerPort
     env_s3_arn           = var.env_s3_arn
     task-definition-name = "${var.prefix}-${terraform.workspace}"
   })
@@ -27,12 +27,12 @@ resource "aws_ecs_task_definition" "app" {
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
+    //  ARM64
   }
-  task_role_arn =  var.task_role_arn
+  task_role_arn = var.task_role_arn
   // this execution task policy contains role_task role to read s3
-  #task_role_arn      = "arn:aws:iam::820599146567:role/ecsTaskExecutionRole"
   execution_role_arn = var.execution_role_arn
-  #execution_role_arn = "arn:aws:iam::820599146567:role/ecsTaskExecutionRole"
+ 
 
   tags = {
     "Name " = "${var.prefix}-${terraform.workspace}"

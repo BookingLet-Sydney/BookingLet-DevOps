@@ -6,20 +6,8 @@ locals {
   }
 }
 
-variable "prefix" {
-  type = string
-}
-
-variable "vpc_id" {
-  type = string
-}
-variable "alb_sg_id" {
-  type = string
-
-}
-
-resource "aws_lb_target_group" "green_app_ip_target_group" {
-  name = "test"
+resource "aws_lb_target_group" "app_ip_target_group_Green" {
+  name_prefix = "Green-"
   port        = 8000
   protocol    = "HTTP"
   target_type = "ip"
@@ -34,17 +22,18 @@ resource "aws_lb_target_group" "green_app_ip_target_group" {
     matcher             = "200-299"
   }
 
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
+  lifecycle {
+    create_before_destroy = true
+  }
 
   tags = {
-    "Name" = "${local.prefix}-tg"
+    "Name"       = "${local.prefix}-tg"
+    "Deployment" = "Green"
   }
 }
 
-resource "aws_lb_target_group" "app_ip_target_group" {
-  name_prefix = "bk-${terraform.workspace}"
+resource "aws_lb_target_group" "app_ip_target_group_Blue" {
+  name_prefix = "Blue-"
   port        = 8000
   protocol    = "HTTP"
   target_type = "ip"
@@ -65,5 +54,6 @@ resource "aws_lb_target_group" "app_ip_target_group" {
 
   tags = {
     "Name" = "${local.prefix}-tg"
+    "Deployment" = "Blue"
   }
 }

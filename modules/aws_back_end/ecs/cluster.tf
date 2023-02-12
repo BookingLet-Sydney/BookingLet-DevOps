@@ -29,22 +29,3 @@ module "ecs" {
   }
 }
 
-# resource "aws_ecs_cluster_capacity_providers" "app" {
-#   cluster_name = module.ecs.cluster_name
-#   capacity_providers = [
-#     "FARGATE",
-#     "FARGATE_SPOT",
-#   ]
-#    default_capacity_provider_strategy {
-
-#       capacity_provider = "FARGATE"
-#       weight = 70
-#       base = 0
-
-
-#       capacity_provider = "FARGATE_SPOT"
-#       weight = 30
-#       base = 0
-
-#    }
-# }

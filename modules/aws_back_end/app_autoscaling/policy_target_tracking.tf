@@ -1,12 +1,12 @@
- #     target_tracking_scaling_policy_configuration {
-  #     predefined_metric_specification {
-  #       predefined_metric_type = "RDSReaderAverageCPUUtilization"
-  #     }
+#     target_tracking_scaling_policy_configuration {
+#     predefined_metric_specification {
+#       predefined_metric_type = "RDSReaderAverageCPUUtilization"
+#     }
 
-  #     target_value       = 75
-  #     scale_in_cooldown  = 300
-  #     scale_out_cooldown = 300
-  #   }
+#     target_value       = 75
+#     scale_in_cooldown  = 300
+#     scale_out_cooldown = 300
+#   }
 
 #   resource "aws_appautoscaling_policy" "example" {
 #   name      = "example"

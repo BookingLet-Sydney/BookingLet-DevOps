@@ -26,6 +26,10 @@ variable "env_s3_arn" {
 variable "containerPort" {
   type = number
 }
+
+variable "memoryReservation" {
+  type = number
+}
 variable "target_group_id" {
   type = string
 }
@@ -35,5 +39,5 @@ variable "cluster_sg_id" {
 }
 
 variable "private_subnets" {
-  type =list(string) 
+  type = list(string)
 }

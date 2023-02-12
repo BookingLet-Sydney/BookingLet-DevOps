@@ -2,8 +2,8 @@ module "managed_grafana" {
   source = "terraform-aws-modules/managed-service-grafana/aws"
 
   # Workspace
-  name                      = "example"
-  description               = "AWS Managed Grafana service example workspace"
+  name                      = "${var.prefix}--${terraform.workspace}-grafana"
+  description               = "AWS Managed Grafana service-${var.prefix}--${terraform.workspace} workspace"
   account_access_type       = "CURRENT_ACCOUNT"
   authentication_providers  = ["AWS_SSO"]
   permission_type           = "SERVICE_MANAGED"
@@ -29,26 +29,13 @@ module "managed_grafana" {
     }
   }
   associate_license = false
-#   # Workspace SAML configuration
-#   saml_admin_role_values  = ["admin"]
-#   saml_editor_role_values = ["editor"]
-#   saml_email_assertion    = "mail"
-#   saml_groups_assertion   = "groups"
-#   saml_login_assertion    = "mail"
-#   saml_name_assertion     = "displayName"
-#   saml_org_assertion      = "org"
-#   saml_role_assertion     = "role"
-#   saml_idp_metadata_url   = "https://my_idp_metadata.url"
 
   # Role associations
   role_associations = {
     "ADMIN" = {
       "user_ids" = ["69fe0448-50d1-70ed-46cc-c1eb2cd9e359"]
+      // create/get user_id from IAM Identity Center
     }
   }
 
-#   tags = {
-#     Terraform   = "true"
-#     Environment = "dev"
-#   }
 }

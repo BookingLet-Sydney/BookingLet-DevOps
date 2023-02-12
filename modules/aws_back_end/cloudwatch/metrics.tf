@@ -1,49 +1,55 @@
-resource "aws_cloudwatch_metric_alarm" "foobar1" {
-  alarm_name          = "cpu>= 50"
+resource "aws_cloudwatch_metric_alarm" "high" {
+  alarm_name          = "${var.prefix}-${terraform.workspace}-cpu>=${var.high_threshold}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   // way to compare
-  evaluation_periods = "1"
+  evaluation_periods = var.evaluation_periods
   // The number of periods over 
-  metric_name = "CPUUtilization"
+  metric_name = var.metric_name
   namespace   = "AWS/ECS"
-  period      = "60"
+  period      = var.period
+  // seconds
 
-  statistic = "Average"
-  /////
-  threshold = "50"
-  ///// 50% CPU
-  alarm_description = "This metric monitors ec2 cpu utilization"
+  statistic = var.statistic
+
+  threshold = var.high_threshold
+
+  alarm_description = "This metric monitors ecs-service cpu utilization"
   //insufficient_data_actions = []
   actions_enabled    = "true"
-  alarm_actions      = [var.auto_scaling_policy_arn]
+  alarm_actions      = [var.auto_scaling_policy_scaleUp_arn]
   treat_missing_data = "missing"
   # datapoints_to_alarm
 
   dimensions = {
-    ClusterName = "bkl-syd-app-dev-cluster"
-    ServiceName = "test-service"
+    ClusterName = var.cluster_name
+    ServiceName = var.service_name
   }
 }
 
-# resource "aws_cloudwatch_metric_alarm" "foobar2" {
-#   alarm_name                = "cpu <= 80"
-#   comparison_operator       = "LessThanOrEqualToThreshold"
-#   // way to compare
-#   evaluation_periods        = "1"
-#   // The number of periods over 
-#   metric_name               = "CPUUtilization"
-#   namespace                 = "AWS/ECS"
-#   period                    = "60"
-#   statistic                 = "Average"
-#   threshold                 = "80"
-#   alarm_description         = "This metric monitors ec2 cpu utilization"
-#   //insufficient_data_actions = []
-#     alarm_enabled       = true
-#   alarm_actions  = [var.auto_scaling_policy_arn]
-#   treat_missing_data = "missing"
-# }
+resource "aws_cloudwatch_metric_alarm" "low" {
+  alarm_name          = "${var.prefix}-${terraform.workspace}-cpu<${var.low_threshold}"
+  comparison_operator = "LessThanOrEqualToThreshold "
+  // way to compare
+  evaluation_periods = var.evaluation_periods
+  // The number of periods over 
+  metric_name = var.metric_name
+  namespace   = "AWS/ECS"
+  period      = var.period
+  // seconds
 
-variable "auto_scaling_policy_arn" {
-  type = string
+  statistic = var.statistic
 
+  threshold = var.low_threshold
+
+  alarm_description = "This metric monitors ecs-service cpu utilization"
+  //insufficient_data_actions = []
+  actions_enabled    = "true"
+  alarm_actions      = [var.auto_scaling_policy_scaleDown_arn]
+  treat_missing_data = "missing"
+  # datapoints_to_alarm
+
+  dimensions = {
+    ClusterName = var.cluster_name
+    ServiceName = var.service_name
+  }
 }

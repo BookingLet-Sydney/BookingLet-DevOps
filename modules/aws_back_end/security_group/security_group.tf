@@ -55,12 +55,11 @@ resource "aws_security_group" "cluster_sg" {
     iterator = port
     for_each = var.cluster_inbound_ports
     content {
-      description      = "Inbound Port${port.value}-Terraform"
-      from_port        = port.value
-      to_port          = port.value
-      protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
+      description     = "Inbound Port${port.value}-Terraform"
+      from_port       = port.value
+      to_port         = port.value
+      protocol        = "tcp"
+      security_groups = ["aws_security_group.alb_sg.id"]
 
     }
 
