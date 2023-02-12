@@ -59,8 +59,7 @@ resource "aws_security_group" "cluster_sg" {
       from_port       = port.value
       to_port         = port.value
       protocol        = "tcp"
-      security_groups = ["aws_security_group.alb_sg.id"]
-
+      security_groups = [aws_security_group.alb_sg.id]
     }
 
   }
@@ -84,3 +83,5 @@ resource "aws_security_group" "cluster_sg" {
     "Name" = "${local.prefix}-${terraform.workspace}-cluster-sg"
   }
 }
+
+
