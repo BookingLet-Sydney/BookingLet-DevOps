@@ -1,7 +1,7 @@
 variable "prefix" {
-    type = string
-  
+  type = string
+
 }
 variable "env_s3_arn" {
-   type = string
+  type = string
 }

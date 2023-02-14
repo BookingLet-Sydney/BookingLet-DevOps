@@ -1,30 +1,3 @@
-variable "prefix" {
-  type    = string
-  default = "bkl-syd"
-
-}
-
-
-
-# variable "sss" {
-#    type = string
-#    default = "sss"
-# }
-
-# variable "sss" {
-#    type = number
-#    default = 123
-# }
-
-# variable "enable" {
-#     default = true
-# }
-
-# variable "wtf" {
-#     type = list(string)
-#     default = ["value1","value2"]
-# }
-
 # variable "wtf" {
 #     type = map
 #     default = {
@@ -46,10 +19,4 @@ variable "prefix" {
 #         wtf = [80,443,8080]
 
 #     }
-# }
-
-# variable "inputthing" {
-#     type = string
-#     description = "no default value, ask when you *terraform plan*"
-# }
-
+#}

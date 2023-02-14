@@ -1,26 +1,41 @@
-resource "aws_ecs_task_definition" "test" {
-  family                   = "test"
+resource "aws_ecs_task_definition" "app" {
+  family = "${var.prefix}-${terraform.workspace}"
+  //A unique name for your task definition.
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 1024
-  memory                   = 2048
+  memory                   = 512
+  //Amount (in MiB) of memory used by the task. 
+  //If the requires_compatibilities is FARGATE this field is required.
+  cpu = 256
+  //Number of cpu units used by the task. 。
+  //If the requires_compatibilities is FARGATE this field is required.
+
   // path.module -> the path of the module who has this current tf file.
   // path.root  -> the path of where main.tf
   // path.cwd   ->the path of this tf file 
-  container_definitions    = templatefile(".///", {
-        name   = "${var.prefix}-cont"
-        cpu    = 128
-        memory = 450
-        image  = "${var.image}"
-        environmentFiles    = "${var.environment_file_path}"
-        container_port      = "${var.container_port}"
-    })
+  container_definitions = templatefile("${path.module}/container_definition.tftpl", {
+    container_name = "${var.prefix}-${terraform.workspace}-container"
+    image_uri      = var.image_uri
+    //cpu                  = 128
+    //This field is optional for tasks using the Fargate launch type
+    memoryReservation    = var.memoryReservation
+    containerPort        = var.containerPort
+    env_s3_arn           = var.env_s3_arn
+    task-definition-name = "${var.prefix}-${terraform.workspace}"
+  })
 
   runtime_platform {
-    operating_system_family = "WINDOWS_SERVER_2019_CORE"
+    operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
+    //  ARM64
   }
-  //task_role
-  // task_excution_role
+  task_role_arn = var.task_role_arn
+  // this execution task policy contains role_task role to read s3
+  execution_role_arn = var.execution_role_arn
+ 
+
+  tags = {
+    "Name " = "${var.prefix}-${terraform.workspace}"
+  }
 
 }

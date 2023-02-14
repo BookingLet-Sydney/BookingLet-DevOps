@@ -5,6 +5,7 @@ variable "prefix" {
 variable "vpc_id" {
   type = string
 }
+
 variable "alb_inbound_ports" {
   type    = list(number)
   default = []

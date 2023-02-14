@@ -1,8 +1,7 @@
-
 module "ecr" {
   source = "terraform-aws-modules/ecr/aws"
 
-  repository_name = "${var.prefix}-${terraform.workspace}-app"
+  repository_name = "${var.prefix}-${terraform.workspace}"
 
   repository_read_write_access_arns = var.repository_read_write_access_arns
   repository_lifecycle_policy = jsonencode({
@@ -24,8 +23,6 @@ module "ecr" {
   })
 
   tags = {
-    "Name" = "${var.prefix}-${terraform.workspace}-app"
-    # Terraform   = "true"
-    # Environment = terraform.workspace
+    "Name" = "${var.prefix}-${terraform.workspace}"
   }
 }
