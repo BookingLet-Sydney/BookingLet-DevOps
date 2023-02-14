@@ -1,0 +1,66 @@
+pipeline{
+  agent {
+    label 'xxxasdsa'
+  }
+
+//   parameters {
+//     choice(name: 'workspace', choices:['uat', 'prod'], description: 'Workspace/environment file to use for deployment')
+//     booleanParam(name: 'destroy', defaultValue: false, description: 'Destroy Terraform build?')
+//   }
+                               
+  environment {
+    HOSTED_ZONE_ID = 'GoExperts_ZoneID'
+  }
+
+
+  stages{
+        
+        stage('Terraform init'){
+            steps{
+                dir("applications/aws_front_end"){
+                    sh '../../CICD/aws_front_end/scripts/echo.sh'
+                    }
+                }
+            }
+        }
+       
+        // stage('Terraform apply'){
+        //     when {
+        //       not {
+        //         equals expected: true, actual: params.destroy
+        //       }
+        //     }  
+        //     steps{
+        //       dir("applications/aws_frontend"){
+        //         sh 'terraform apply --auto-approve'
+        //         //Delete the *.tfvars with credentials
+        //         sh 'rm -rf terraform.tfvars'
+        //       }
+        //     }
+        // }
+
+        // stage('Terraform destroy'){
+        //     when {
+        //       equals expected: true, actual: params.destroy
+        //     }  
+        //     steps{
+        //       dir("applications/aws_frontend"){                
+        //         sh 'terraform destroy --auto-approve'
+        //         //Delete the *.tfvars with credentials
+        //         sh 'rm -rf terraform.tfvars'                
+        //       }
+        //     }
+        // }
+  }
+
+  post {
+        success {
+            echo "WELL DONE!!"
+            //bitbucketStatusNotify(buildState: 'SUCCESSFUL')
+        }
+        failure {
+            echo "FAILED"
+           // bitbucketStatusNotify(buildState: 'FAILED')
+        }
+  }
+}
