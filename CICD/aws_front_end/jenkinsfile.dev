@@ -18,6 +18,7 @@ pipeline{
         stage('Terraform init'){
             steps{
                 dir("applications/aws_front_end"){
+                    sh 'whoami'
                     sh '../../CICD/aws_front_end/scripts/echo.sh'
                     }
                 }
