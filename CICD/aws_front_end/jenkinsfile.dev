@@ -32,7 +32,7 @@ pipeline{
 
         stage('Terraform init222'){
             steps{
-                dir("applications/aws_front_end"){
+                dir("application/aws_front_end"){
                     sh'ls'
                     sh "${scripts_path}/init.sh"
                     }
