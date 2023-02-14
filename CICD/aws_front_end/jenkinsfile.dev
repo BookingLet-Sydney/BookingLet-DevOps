@@ -9,6 +9,9 @@ pipeline{
 //     choice(name: 'workspace', choices:['uat', 'prod'], description: 'Workspace/environment file to use for deployment')
 //     booleanParam(name: 'destroy', defaultValue: false, description: 'Destroy Terraform build?')
 //   }
+  parameters {
+    booleanParam(name: 'destroy', defaultValue: false, description: 'Want to terraform Destroy?')
+  }
                                
   environment {
     HOSTED_ZONE_ID = 'GoExperts_ZoneID'
@@ -52,6 +55,9 @@ pipeline{
             }            
               
         stage('Terraform apply'){
+            when {
+                    expression { params.destroy == false }
+                }
             steps{
                 dir("application/aws_front_end"){
                     withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
@@ -61,7 +67,22 @@ pipeline{
                          }
                     }
                 }
-            }            
+            }    
+
+        stage('Terraform destroy'){
+            when {
+                    expression { params.destroy == true }
+                }
+            steps{
+                dir("application/aws_front_end"){
+                    withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
+                    sh'ls'
+                    sh "${scripts_path}/destroy.sh"
+                    sh 'rm -rf terraform.tfvars'
+                         }
+                    }
+                }
+            }                      
                     
         // stage('Terraform apply'){
         //     when {
