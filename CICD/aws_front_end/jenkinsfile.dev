@@ -2,6 +2,7 @@ pipeline{
     agent {
         label 'agent1'
         //must install terraform first, version Terraform v1.3.8
+        //must install aws-cli ,and credentials configured
     }
 
 //   parameters {
@@ -27,7 +28,7 @@ pipeline{
                 }
             }
 
-        stage('Terraform init'){
+        stage('Terraform init222'){
             steps{
                 dir("applications/aws_front_end"){
                     sh "${scripts_path}/init.sh"
