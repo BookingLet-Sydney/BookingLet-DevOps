@@ -56,9 +56,16 @@ module "cdn" {
   acm_arn                             = module.acm.acm_arn
   www_domain                          = "www.${terraform.workspace}.bookinglet.link"
   non_www_domain                      = "${terraform.workspace}.bookinglet.link"
-  www_bucket_regional_domain_name     = module.s3.www_bucket_regional_domain_name
-  non_www_bucket_regional_domain_name = module.s3.non_www_bucket_regional_domain_name
+  www_domain_website_endpoint    = module.s3.www_domain_website_endpoint
+  non_www_domain_website_endpoint = module.s3.non_www_domain_website_endpoint
 }
 
 
 
+output "www_domain_website_endpoint" {
+  value = module.s3.www_domain_website_endpoint
+}
+
+output "non_www_domain_website_endpoint" {
+    value = module.s3.non_www_domain_website_endpoint
+}

@@ -12,22 +12,22 @@ variable "non_www_domain" {
   type = string
 }
 
-variable "www_bucket_regional_domain_name" {
+variable "www_domain_website_endpoint" {
   type = string
 }
 
-variable "non_www_bucket_regional_domain_name" {
+variable "non_www_domain_website_endpoint" {
   type = string
 
 }
 
-resource "aws_cloudfront_origin_access_control" "s3" {
-  name                              = "${var.prefix}-${terraform.workspace}-OrigionAccessControl"
-  description                       = "${var.prefix}-${terraform.workspace}-OrigionAccessControl-CDN_Policy"
-  origin_access_control_origin_type = "s3"
-  signing_behavior                  = "always"
-  signing_protocol                  = "sigv4"
-}
+# resource "aws_cloudfront_origin_access_control" "s3" {
+#   name                              = "${var.prefix}-${terraform.workspace}-OrigionAccessControl"
+#   description                       = "${var.prefix}-${terraform.workspace}-OrigionAccessControl-CDN_Policy"
+#   origin_access_control_origin_type = "s3"
+#   signing_behavior                  = "always"
+#   signing_protocol                  = "sigv4"
+# }
 
 
 locals {
@@ -36,9 +36,17 @@ locals {
 
 resource "aws_cloudfront_distribution" "www_domain" {
   origin {
-    domain_name              = var.www_bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
-    origin_id                = local.s3_origin_id
+    domain_name = var.www_domain_website_endpoint
+    # origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
+    origin_id = local.s3_origin_id
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
+
   }
 
   enabled             = true
@@ -87,16 +95,22 @@ resource "aws_cloudfront_distribution" "www_domain" {
 
 resource "aws_cloudfront_distribution" "non_www_domain" {
   origin {
-    domain_name              = var.non_www_bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
-    origin_id                = local.s3_origin_id
+    domain_name = var.non_www_domain_website_endpoint
+    //origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
+    origin_id = local.s3_origin_id
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
+
+
   }
 
-  enabled             = true
-  is_ipv6_enabled     = true
-  comment             = "Some comment"
-  default_root_object = "index.html"
-
+  enabled         = true
+  is_ipv6_enabled = true
+  comment         = "Some comment"
 
   aliases = [var.non_www_domain]
 
