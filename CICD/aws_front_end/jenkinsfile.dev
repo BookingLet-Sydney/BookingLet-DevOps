@@ -17,7 +17,7 @@ pipeline{
   environment {
     HOSTED_ZONE_ID = 'GoExperts_ZoneID'
     scripts_path = "../../CICD/aws_front_end/scripts"
-    workspace =  "${params.workspace}"
+    workspace =  "${params.destroy}"
   }
 
 
