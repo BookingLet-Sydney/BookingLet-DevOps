@@ -36,11 +36,21 @@ pipeline{
                     withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
                     sh'ls'
                     sh "${scripts_path}/init.sh"
-                    }
+                        }
                     }
                 }
             }            
-        
+        stage('Terraform init2333'){
+            steps{
+                dir("application/aws_front_end"){
+                    withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
+                    sh'ls'
+                    sh "${scripts_path}/workspace.sh"
+                        }
+                    }
+                }
+            }            
+              
        
         // stage('Terraform apply'){
         //     when {
