@@ -22,6 +22,7 @@ pipeline{
             steps{
                 dir("applications/aws_front_end"){
                     sh 'whoami'
+                    sh'ls'
                     sh "chmod +x ${scripts_path}/*.sh"
                     sh "${scripts_path}/echo.sh"
                     }
