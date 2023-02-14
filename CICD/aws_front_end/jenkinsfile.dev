@@ -19,6 +19,7 @@ pipeline{
             steps{
                 dir("applications/aws_front_end"){
                     sh 'whoami'
+                    sh 'chmod +x ../../CICD/aws_front_end/scripts/echo.sh'
                     sh '../../CICD/aws_front_end/scripts/echo.sh'
                     }
                 }
