@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 terraform workspace list
-terraform workspace select ${params.destroy}
+terraform workspace select ${workspace}
