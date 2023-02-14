@@ -33,8 +33,10 @@ pipeline{
         stage('Terraform init222'){
             steps{
                 dir("application/aws_front_end"){
+                    withAWS(credentials: "${AWS_CREDENTIAL}", region: "${AWS_REGION}") {
                     sh'ls'
                     sh "${scripts_path}/init.sh"
+                    }
                     }
                 }
             }            
