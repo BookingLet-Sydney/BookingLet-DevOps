@@ -49,7 +49,7 @@ pipeline{
                 dir("application/aws_front_end"){
                      withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
                     sh'ls'
-                    sh "${scripts_path}/workspace.sh"
+                    sh """${scripts_path}/workspace.sh"""
                          }
                     }
                 }
