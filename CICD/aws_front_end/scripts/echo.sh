@@ -2,7 +2,7 @@
 set -e
 echo "test"
 ### aws
-sudo apt-get -qq update && sudo apt -qq install python3-pip -y && sudo pip3 install awscli --upgrade
+sudo apt-get -qq update && sudo apt -qq install python3-pip -y && sudo pip3 install -q awscli --upgrade
 echo "aws --version"
 aws --version
 
