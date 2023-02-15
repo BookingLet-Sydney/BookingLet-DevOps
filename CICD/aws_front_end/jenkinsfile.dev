@@ -37,7 +37,7 @@ pipeline{
             steps{
                 dir("application/aws_front_end"){
                     withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
-                    sh'ls'
+              
                     sh "${scripts_path}/init.sh"
                         }
                     }
@@ -47,7 +47,7 @@ pipeline{
             steps{
                 dir("application/aws_front_end"){
                      withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
-                    sh'ls'
+                 
                      sh "${scripts_path}/workspace.sh"
                     //sh "terraform workspace select ${params.destroy}"
                          }
@@ -62,7 +62,7 @@ pipeline{
             steps{
                 dir("application/aws_front_end"){
                     withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
-                    sh'ls'
+             
                     sh "${scripts_path}/apply.sh"
                     sh 'rm -rf terraform.tfvars'
                          }
@@ -77,7 +77,7 @@ pipeline{
             steps{
                 dir("application/aws_front_end"){
                     withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
-                    sh'ls'
+              
                     sh "${scripts_path}/destroy.sh"
                     sh 'rm -rf terraform.tfvars'
                          }
