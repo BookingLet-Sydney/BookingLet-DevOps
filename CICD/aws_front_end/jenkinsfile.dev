@@ -1,0 +1,126 @@
+pipeline{
+    agent {
+        label 'agent1'
+        //must install terraform first, version Terraform v1.3.8 on Agent
+        //must install aws-cli ,and credentials configured on Agent
+        // or run init.sh to install by scripts .
+    }
+
+  parameters {
+        booleanParam(name: 'destroy', defaultValue: false, description: 'Want to terraform Destroy?')
+        choice(name: 'workspace', choices: ['dev', 'prod'], description: 'Workspace deployment')
+    }
+                               
+  environment {
+        HOSTED_ZONE_ID = 'GoExperts_ZoneID'
+        scripts_path = "../../CICD/aws_front_end/scripts"
+    }
+
+
+  stages{
+
+        stage('Env init'){
+            steps{
+                dir("application/aws_front_end"){
+                    sh "chmod +x ${scripts_path}/*.sh"
+                    sh "${scripts_path}/init.sh"
+                }
+            }
+        }
+
+        stage('Terraform init'){
+            steps{
+                dir("application/aws_front_end"){
+                    withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
+              
+                    sh "${scripts_path}/tf_init.sh"
+                    }
+                }
+            }
+        }
+        stage('Terraform workspace'){
+            steps{
+                dir("application/aws_front_end"){
+                    withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
+                 
+                     sh "${scripts_path}/workspace.sh ${params.workspace} "
+                        //sh "terraform workspace select ${params.destroy}"
+                        // sh 'rm -rf terraform.tfvars'
+                    }
+                }
+            }
+        }
+
+        stage('Terraform apply'){
+            when {
+                    expression { params.destroy == false }
+            }
+            steps{
+                dir("application/aws_front_end"){
+                    withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
+             
+                    sh "${scripts_path}/apply.sh"
+                        // sh 'rm -rf terraform.tfvars'
+                    }
+                }
+            }
+        }
+
+        stage('Terraform destroy'){
+            when {
+                    expression { params.destroy == true }
+            }
+            steps{
+                dir("application/aws_front_end"){
+                    withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
+              
+                    sh "${scripts_path}/destroy.sh"
+                        // sh 'rm -rf terraform.tfvars'
+                    }
+                }
+            }
+        }
+
+        // stage('Terraform apply'){
+        //     when {
+        //       not {
+        //         equals expected: true, actual: params.destroy
+        //       }
+        //     }  
+        //     steps{
+        //       dir("applications/aws_frontend"){
+        //         sh 'terraform apply --auto-approve'
+        //         //Delete the *.tfvars with credentials
+        //         sh 'rm -rf terraform.tfvars'
+        //       }
+        //     }
+        // }
+
+        // stage('Terraform destroy'){
+        //     when {
+        //       equals expected: true, actual: params.destroy
+        //     }  
+        //     steps{
+        //       dir("applications/aws_frontend"){                
+        //         sh 'terraform destroy --auto-approve'
+        //         //Delete the *.tfvars with credentials
+        //         sh 'rm -rf terraform.tfvars'                
+        //       }
+        //     }
+        // }
+    }
+
+  post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo "WELL DONE!!"
+            //bitbucketStatusNotify(buildState: 'SUCCESSFUL')
+        }
+        failure {
+            echo "FAILED"
+            // bitbucketStatusNotify(buildState: 'FAILED')
+        }
+    }
+}
