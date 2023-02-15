@@ -41,7 +41,7 @@ resource "aws_lb_target_group" "app_ip_target_group_Blue" {
 
   health_check {
     path                = "/v1/store"
-    interval            = 30
+    interval            = 300
     timeout             = 5
     healthy_threshold   = 5
     unhealthy_threshold = 2
