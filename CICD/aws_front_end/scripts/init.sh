@@ -7,7 +7,7 @@ echo "****************************************************"
 ### aws
 sudo apt-get -qq update && sudo apt -qq install python3-pip -y && sudo pip3 install -q awscli --upgrade
 echo "****************************************************"
-echo "aws --version"
+echo "*****************aws --version****************************"
 aws --version
 echo "****************************************************"
 
@@ -21,6 +21,6 @@ sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.rel
 sudo apt -qq install terraform
 
 echo "****************************************************"
-echo "terraform --version"
+echo "*****************terraform --version****************************"
 terraform --version
 echo "****************************************************"
