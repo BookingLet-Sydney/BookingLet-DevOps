@@ -19,7 +19,7 @@ pipeline{
 
   stages{
 
-        stage('env init'){
+        stage('Env init'){
             steps{
                 dir("application/aws_front_end"){
                     sh "chmod +x ${scripts_path}/*.sh"
@@ -38,7 +38,7 @@ pipeline{
                 }
             }
         }
-        stage('Terraform init2333'){
+        stage('Terraform workspace'){
             steps{
                 dir("application/aws_front_end"){
                     withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
