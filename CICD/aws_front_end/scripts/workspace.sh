@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
 terraform workspace list
-terraform workspace select "${workspace}"
+echo ${workspace}
+terraform workspace select ${workspace}
