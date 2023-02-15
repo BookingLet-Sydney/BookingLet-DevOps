@@ -3,6 +3,7 @@ pipeline{
         label 'agent1'
         //must install terraform first, version Terraform v1.3.8 on Agent
         //must install aws-cli ,and credentials configured on Agent
+        // or run init.sh to install by scripts .
     }
 
   parameters {
@@ -18,22 +19,21 @@ pipeline{
 
   stages{
         
-        stage('Terraform init'){
+        stage('env init'){
             steps{
                 dir("application/aws_front_end"){
-                    sh "echo ${workspace}"
                     sh "chmod +x ${scripts_path}/*.sh"
-                    sh "${scripts_path}/echo.sh"
+                    sh "${scripts_path}/init.sh"
                     }
                 }
             }
 
-        stage('Terraform init222'){
+        stage('Terraform init'){
             steps{
                 dir("application/aws_front_end"){
                     withAWS(credentials: "AWS-Credentials-Root-AccessKey", region: "ap-southeast-2") {
               
-                    sh "${scripts_path}/init.sh"
+                    sh "${scripts_path}/tf_init.sh"
                         }
                     }
                 }
