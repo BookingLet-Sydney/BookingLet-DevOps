@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-echo "stradadasds,wocaonimamama is ${scripts_path}"
+echo "stradadasds,wocaonimamama is echo ${workspace}"
