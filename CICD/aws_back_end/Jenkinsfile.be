@@ -11,7 +11,7 @@ pipeline {
 
     parameters {
         booleanParam(name: 'destroy', defaultValue: false, description: 'Want to terraform Destroy?')
-        choice(name: 'workspace', choices: ['dev', 'prod'], description: 'Workspace deployment')
+        choice(name: 'workspace', choices: ['uat', 'prod'], description: 'Workspace deployment')
     }
     stages {
         stage('Initializing') {
