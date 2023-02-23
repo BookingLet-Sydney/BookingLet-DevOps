@@ -2,7 +2,7 @@ resource "aws_ecs_service" "app" {
   name            = "${var.prefix}-${terraform.workspace}-service"
   cluster         = module.ecs.cluster_id
   task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = 3
+  desired_count   = 15
 
 
   force_new_deployment = true
