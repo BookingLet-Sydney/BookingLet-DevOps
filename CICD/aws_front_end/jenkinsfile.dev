@@ -81,33 +81,6 @@ pipeline{
             }
         }
 
-        // stage('Terraform apply'){
-        //     when {
-        //       not {
-        //         equals expected: true, actual: params.destroy
-        //       }
-        //     }  
-        //     steps{
-        //       dir("applications/aws_frontend"){
-        //         sh 'terraform apply --auto-approve'
-        //         //Delete the *.tfvars with credentials
-        //         sh 'rm -rf terraform.tfvars'
-        //       }
-        //     }
-        // }
-
-        // stage('Terraform destroy'){
-        //     when {
-        //       equals expected: true, actual: params.destroy
-        //     }  
-        //     steps{
-        //       dir("applications/aws_frontend"){                
-        //         sh 'terraform destroy --auto-approve'
-        //         //Delete the *.tfvars with credentials
-        //         sh 'rm -rf terraform.tfvars'                
-        //       }
-        //     }
-        // }
     }
 
   post {
